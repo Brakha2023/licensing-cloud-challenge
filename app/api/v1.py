@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1")
 security = HTTPBearer()
 
-# Charger les clés JWT
+
 def get_private_key():
     with open(os.getenv("JWT_PRIVATE_KEY_PATH"), "rb") as f:
         return f.read()
@@ -65,7 +65,7 @@ def verify_license_token(token: str) -> LicenseTokenPayload:
         payload = jwt.decode(token, get_public_key(), algorithms=[ALGORITHM])
         token_data = LicenseTokenPayload(**payload)
         
-        # Vérifier statut et validité temporelle
+        
         if token_data.status != "ACTIVE":
             raise HTTPException(status_code=403, detail="License not active")
         
@@ -85,7 +85,7 @@ def register_app(
 ):
     payload = verify_license_token(credentials.credentials)
     
-    # Vérifier le nombre d'applications existantes
+    
     license_db = db.query(License).filter(License.tenant_id == payload.tenant_id).first()
     if not license_db:
         raise HTTPException(status_code=404, detail="License not found")
@@ -98,7 +98,7 @@ def register_app(
             app_id=None
         )
     
-    # Créer l'application
+    
     app = Application(license_id=license_db.id, app_name=app_data.app_name)
     db.add(app)
     db.commit()
