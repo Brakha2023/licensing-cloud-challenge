@@ -1,0 +1,15 @@
+# Clés JWT (NE JAMAIS les versionner !)
+keys/
+
+# Fichiers système
+.DS_Store
+__pycache__/
+*.pyc
+.env
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
